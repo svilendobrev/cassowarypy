@@ -1,0 +1,36 @@
+<html><body><pre>
+
+g'day.
+
+This is a python wrapper over the (famous) Cassowary incremental constraint solver.
+It uses the c++ implementation (0.6) as backend.
+
+The original c++ code is somewhat refactored to remove memory leaks 
+by using reference counting, and is usable alone.
+
+The refactoring was done somewhen in 2002, and the code is not touched much since then.
+The Finite-domain part (using GTL graph library) is not tried/tested; it might or might not work.
+
+repository: svn co https://dbcook.svn.sf.net/svnroot/dbcook/cassowarypy
+
+how to compile/install for python:
+ * the c++ code needs g++ 3.3.3 and won't compile on any higher versions.
+   it also compiles on some MSVC.
+ * 'swig' is also needed
+ * if the default C++ compiler is one of those, just 'python setup.py install' would do. 
+   Then run python test.py to see if all works.
+ * else, u have to install one of these compilers and fight with distutils to make it use that one.
+   e.g. "CC=g++-3.3 python setup.py install" might work
+
+
+My code is licensed under MIT-license. 
+Original Cassowary code is licensed under LGPL.
+
+Original cassowary Web Page: (last update about year 2000)
+http://www.cs.washington.edu/research/constraints/cassowary
+
+have fun
+
+svil 
+svilen_dobrev at users point sourceforge point net
+
