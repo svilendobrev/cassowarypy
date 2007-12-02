@@ -1,3 +1,4 @@
+#$Id$
 from distutils.core import setup, Extension
 import os
 
@@ -92,13 +93,14 @@ if swigcpp not in argv:
     if 'build_ext' in argv:
         argv.insert( 1+argv.index( 'build_ext' ), swigcpp)
 
-print ' warn: re-building this works on g++ 3.3*; strip the result lib when ready'
+print ' warn: re-building this works on gcc 3.3* and gcc-4.1; strip the result lib when ready'
 
 setup( name = 'csw', description = 'cassowrapy: py-wrap of cassowary linear constraint solver',
     author = 'svilen dobrev',
     author_email= 'svilen_dobrev at users point sourceforge point net',
     license = 'MIT',
-    version = '0.25unleak',
+    version = '0.26unleak',
     py_modules  = pys,
     ext_modules = [ csw ]
 )
+# vim:ts=4:sw=4:expandtab

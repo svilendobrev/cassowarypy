@@ -1,3 +1,4 @@
+#$Id$
 import csw as c
 if 0:
     print c.cvar.trace_newdel
@@ -548,3 +549,4 @@ def test():
         print '========', a.__name__
         a()
 test()
+# vim:ts=4:sw=4:expandtab
