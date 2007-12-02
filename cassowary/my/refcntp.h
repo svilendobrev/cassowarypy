@@ -40,15 +40,29 @@ REFCOUNT_INST( MyType )         //from refcnt.h
 #ifndef NEED_RefCountPtrConst
 #define RefCountPtrConst RefCountPtr
 #endif
-
+/*
+ * the external incref/decref' calls below work for newer c++ (e.g. gcc 4.x) if either
+ * used as ::incref() AND the incref()s are templated
+ * or used without ::. THIS one is chosen here, hence templates below are commented.
+ *
+template< class Type> void incref( Type * p);
+template< class Type> void decref( Type * p, int del);
+these need template<> ...func... at definition (refcnt.h/REFCOUNT_INST)
+*/
 template< class Type>
 class RefCountPtrConst {
 protected:
     Type * _ptr;
 private:
- static void inc( Type * p)             { ::incref(p); }
-    void inc() const                    { if (_ptr) ::incref( _ptr); }
-    void dec() const                    { if (_ptr) ::decref( _ptr, 1); }
+ static void inc( Type * p) {
+        void incref( Type * p);
+        incref(p); }
+    void inc() const {
+        void incref( Type * p);
+        if (_ptr) incref( _ptr); }
+    void dec() const {
+        void decref( Type * p, int del);
+        if (_ptr) decref( _ptr, 1); }
 public:
     RefCountPtrConst()                          { _ptr= 0; }
     RefCountPtrConst( Type * p )                { _ptr= p; inc(); }
@@ -91,7 +105,11 @@ template< class Type>
 class RefCountPtr_static_holder : public RefCountPtrConst<Type> {
 public:
     RefCountPtr_static_holder( Type * p =0 ) : RefCountPtrConst<Type>(p) {}
-   ~RefCountPtr_static_holder()         { if (_ptr) ::decref(_ptr,0); _ptr=0; }
+   ~RefCountPtr_static_holder() {
+        void decref( Type * p, int del);
+        if (this->_ptr) decref( this->_ptr,0);
+        this->_ptr=0;
+   }
 };
 
 template< class Type, class superType>
@@ -100,19 +118,19 @@ public:
     RefCountPtr_Subclass()                          {}
     RefCountPtr_Subclass( Type * p ) : RefCountPtr<Type> (p) {}
 /*    use defaults
-    //RefCountPtr_Subclass( const RefCountPtr_Subclass&s) 
+    //RefCountPtr_Subclass( const RefCountPtr_Subclass&s)
         //careful with x=x
-    const RefCountPtr_Subclass & operator = ( Type * p) { 
+    const RefCountPtr_Subclass & operator = ( Type * p) {
         return RefCountPtr<superType>::operator =(p); }
     const RefCountPtr_Subclass & operator = ( const RefCountPtr_Subclass &s)
         return RefCountPtr<superType>::operator =(s); }
 */
-    int operator == (const Type * p) const          { return _ptr == p; }
-    int operator != (const Type * p) const          { return _ptr != p; }
-    int operator == (const superType * p) const     { return _ptr == p; }
-    int operator != (const superType * p) const     { return _ptr != p; }
-    
-    operator RefCountPtr<superType> () const { return RefCountPtr<superType>( _ptr ); }
+    int operator == (const Type * p) const          { return this->_ptr == p; }
+    int operator != (const Type * p) const          { return this->_ptr != p; }
+    int operator == (const superType * p) const     { return this->_ptr == p; }
+    int operator != (const superType * p) const     { return this->_ptr != p; }
+
+    operator RefCountPtr<superType> () const { return RefCountPtr<superType>( this->_ptr ); }
 };
 
 /** allow overloading of these -- no, won't work (const RefCountPtrConst &..)

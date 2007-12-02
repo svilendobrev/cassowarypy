@@ -26,12 +26,13 @@ public: void incref()       { _refcnt.incref(); }  \
 #define REFCOUNT_INST(Type)     \
 void incref( Type * p)  { p->incref(); }  \
 void decref( Type * p, int del)  { p->decref(); if (del && !p->nref()) delete p; }
+//use template<> ...func... if func is declared as template in refcntp.h
 
 #ifdef TRACE_REFCOUNT_DIE
 # define REFCOUNT_DIE(Type)  printf(" DIE "#Type" %p: %d refs\n", this,nref());
 # define REFCOUNT_DIE0(Type) if (nref()) REFCOUNT_DIE(Type);
 #else
-# define REFCOUNT_DIE(Type)  
+# define REFCOUNT_DIE(Type)
 # define REFCOUNT_DIE0(Type) if (0) {}
 #endif
 

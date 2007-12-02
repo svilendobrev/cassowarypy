@@ -288,4 +288,24 @@ public:
 
 typedef GenericLinearExpression<Number>::VarToCoeffMap VarToNumberMap;
 
+//because "no match for operator- in 'var - const'" for gcc-4.*
+//template<> does not help, be it here or as friend's above
+inline
+GenericLinearExpression<Number> operator+( const Variable & e1, Number e2) { return GenericLinearExpression<Number>(e1).Plus( e2); }
+inline
+GenericLinearExpression<Number> operator-( const Variable & e1, Number e2) { return GenericLinearExpression<Number>(e1).Minus( e2); }
+inline
+GenericLinearExpression<Number> operator*( const Variable & e1, Number e2) { return GenericLinearExpression<Number>(e1).Times( e2); }
+inline
+GenericLinearExpression<Number> operator/( const Variable & e1, Number e2) { return GenericLinearExpression<Number>(e1).Divide( e2); }
+
+inline
+GenericLinearExpression<Number> operator+( Number e1, const Variable & e2) { return GenericLinearExpression<Number>(e1).Plus( e2); }
+inline
+GenericLinearExpression<Number> operator-( Number e1, const Variable & e2) { return GenericLinearExpression<Number>(e1).Minus( e2); }
+inline
+GenericLinearExpression<Number> operator*( Number e1, const Variable & e2) { return GenericLinearExpression<Number>(e1).Times( e2); }
+inline
+GenericLinearExpression<Number> operator/( Number e1, const Variable & e2) { return GenericLinearExpression<Number>(e1).Divide( e2); }
+
 #endif

@@ -8,13 +8,15 @@ SRCcc += $(filter-out FD%,$(wildcard *.cc))
 SRCc  += $(wildcard *.c)
 LIB = libcsw.a
 
-now: lib test
+now: dirs lib test
+dirs:
+	@mkdir -p o o/my
 .PRECIOUS: o/%.o
 #TESTS = ParseTest SubgraphTest CTest LeakTest test-Constraint test-LinearExpression test-SimplexSolver test-Strength test-Variable 	FDTests
 #TESTS = Tests
 TESTS = z leak test_0-expr Tests leak	Bug0 Bug1 Bug2#CTest
 
-SRC = $(SRCcc) $(SRCc) $(SRCcpp) $(TESTS:%=test/%.cc)
+SRC = $(SRCcc) $(SRCc) $(SRCcpp) $(TESTS:%=test/%.cc) $(TESTS:%=test/%.cpp)
 
 test: $(TESTS:%=%.test)
 %.test: %.exe
@@ -40,11 +42,13 @@ $(LIB): $(SRCcc:%.cc=o/%.o) $(SRCc:%.c=o/%.o) $(SRCcpp:%.cpp=o/%.o)
 	ar r $@ $?
 clean:
 	-rm o/*.o o/*/*.o
+
+.PHONY: tag tags
 ctags tags tag:
 	ctags -R .
 
 MDEPS= _makedep.dep
-MDEPPFX=/home/_bin/cc/
+#MDEPPFX=/home/_bin/cc/
 dep $(MDEPS):	#\$$O/
 #	@$(MDEPPFX)mdep.pl -s $(INC) -r='s,\.cc :,o/\.o :,; ' $(MDEPFLAGS) *.cc my/*.cpp $(MDEPENDENTS) > $(MDEPS)
 	@$(MDEPPFX)mdep.pl -s $(INC) -r='s/\.(c|cc|cpp) :/\.o :/; s,^([^/]+/)*([^/]+) :,o/$$2 :,' $(MDEPFLAGS) $(SRC) $(MDEPENDENTS) > $(MDEPS)
