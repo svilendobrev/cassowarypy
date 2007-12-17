@@ -66,6 +66,8 @@ def test_expression():
         print leq
         leq = c.LinearInequality( x, c.cnGEQ, y+1)
         print leq
+        leq = c.LinearInequality( x, c.cnNEQ, y+5)  #this does not work as expected; DO NOT USE
+        print leq
 
     print '====='
     return

@@ -95,12 +95,51 @@ if swigcpp not in argv:
 
 print ' warn: re-building this works on gcc 3.3* and gcc-4.1; strip the result lib when ready'
 
-setup( name = 'csw', description = 'cassowrapy: py-wrap of cassowary linear constraint solver',
-    author = 'svilen dobrev',
-    author_email= 'svilen_dobrev at users point sourceforge point net',
-    license = 'MIT',
+setup( name = 'cassowarypy',
+    description = 'cassowarypy: python-wrap of Cassowary linear constraint solver',
     version = '0.26unleak',
     py_modules  = pys,
-    ext_modules = [ csw ]
+    ext_modules = [ csw ],
+    author = 'svilen dobrev',
+    author_email= 'svilen_dobrev at users point sourceforge point net',
+    url= 'http://dbcook.sourceforge.net/readme-cassowarypy',
+    license = 'MIT',
+    classifiers='''
+Development Status :: 5 - Production/Stable
+Intended Audience :: Developers
+License :: OSI Approved :: MIT License
+Programming Language :: Python
+Topic :: Scientific/Engineering :: Mathematics
+Topic :: Software Development :: Libraries :: Python Modules
+'''.strip().split('\n'),
+
+    long_description= '''\
+This is a python wrapper over the (famous) Cassowary incremental constraint solver.
+It uses the c++ implementation (0.6) as backend.
+
+The original c++ code is somewhat refactored to remove memory leaks
+by using reference counting, and is usable alone.
+
+The refactoring was done somewhen in 2002, and the code is not touched much since then.
+Last changes are workarounding recent template-things in new (gcc-4.x) c++ compilers.
+The Finite-domain part (using GTL graph library) is not tried/tested; it might or might not work.
+
+repository: svn co https://dbcook.svn.sf.net/svnroot/dbcook/cassowarypy
+
+how to compile/install for python:
+ * the c++ code now compiles on both g++ 3.3.3 and g++ 4.1.3.
+   it also compiles on some MSVC.
+ * 'swig' is also needed
+ * if the default C++ compiler is one of those, just 'python setup.py install' would do.
+   Then run python test.py to see if all works.
+ * else, u have to install one of these compilers and fight with distutils to make it use that one.
+   e.g. "CC=g++-3.3 python setup.py install" might work; also check the link'ing part
+
+My code is under MIT-license.
+Original Cassowary code is licensed under LGPL.
+
+Original cassowary Web Page: (last update about year 2000)
+http://www.cs.washington.edu/research/constraints/cassowary
+''',
 )
 # vim:ts=4:sw=4:expandtab
