@@ -122,7 +122,7 @@ typedef GLE* P_LinearExpression ;
 %include "cassowary/FDSolver.h"
 #endif
 
-#define DEF__str__(x) string __str__() const { ostringstream ss; (x)->PrintOn(ss); ss << ends; return ss.str(); }
+#define DEF__str__(x) string __str__() const { ostringstream ss; (x)->PrintOn(ss); return ss.str(); }   //ss << ends; 
 
 %extend GLE { //LinearExpression
     DEF__str__(self)
