@@ -206,6 +206,7 @@ typedef GLE* P_LinearExpression ;
 
 %rename( LinearEquation) newLinearEquation;
 %rename( LinearInequality) newLinearInequality;
+%rename( StayConstraint) newStayConstraint;
 %inline %{
 #define PQ1(what,x) P_Constraint   new##what( x a,                      \
         const Strength & strength = sRequired(), double weight = 1.0)   \
@@ -252,6 +253,9 @@ typedef GLE* P_LinearExpression ;
     PNE2( Number , const Variable & )
     PNE2( Number , const LinearExpression & )
 #endif
+
+    PQ1( StayConstraint, const Variable &)
+
 %}
 
 #if 10

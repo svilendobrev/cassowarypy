@@ -70,6 +70,7 @@ def test_expression():
         print leq
 
     print '====='
+    c.StayConstraint( x, c.sMedium() )
     return
     print "..bounds"
     solver = c.SimplexSolver()
