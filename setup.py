@@ -97,7 +97,7 @@ print ' warn: re-building this works on gcc 3.3* and gcc-4.1; strip the result l
 
 setup( name = 'cassowarypy',
     description = 'cassowarypy: python-wrap of Cassowary linear constraint solver',
-    version = '0.26unleak',
+    version = '0.27',
     py_modules  = pys,
     ext_modules = [ csw ],
     author = 'svilen dobrev',
